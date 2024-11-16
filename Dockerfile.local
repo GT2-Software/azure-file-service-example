@@ -1,0 +1,27 @@
+# STAGE 1 compile and buid war
+FROM maven:3.8.1-jdk-8 AS maven
+WORKDIR /app
+
+COPY src ./src
+COPY pom.xml ./
+
+# compilado del war
+RUN mvn clean package
+
+# STAGE 2 deploy war
+FROM payara/micro:5.2022.5
+
+USER root
+RUN mkdir -p /mnt/volume
+
+COPY --from=maven /app/target/azure-file-service-1.0.war $DEPLOY_DIR 
+CMD ["--deploymentDir","/opt/payara/deployments", "--port", "8080"]
+ENV INSTANCE_NUMBER=UNO
+#ENV AZ_ST_ACC_CONN_STRING=
+#ENV AZ_ST_ACC_NAME=
+ENV LOG_ROOT_PATH=/mnt/volumes/vazurefileservice/log
+ENV LOG_ROOT_PATH_BLOB=dev/log
+ENV COUNTRY=GT
+ENV COMPUTERNAME=DOCKER
+
+#VOLUME /mnt/volume/vazurefileservice
