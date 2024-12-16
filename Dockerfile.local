@@ -12,16 +12,21 @@ RUN mvn clean package
 FROM payara/micro:5.2022.5
 
 USER root
-RUN mkdir -p /mnt/volume
+RUN mkdir -p /mnt/volumes \
+    && mkdir -p /mnt/volumes/vazurefileservice \
+    && mkdir -p /mnt/volumes/vazurefileservice/prd/log \
+    && mkdir -p /mnt/volumes/vazurefileservice/dev/log \
+    && chown -R payara:payara /mnt/volumes
 
+#USER payara
 COPY --from=maven /app/target/azure-file-service-1.0.war $DEPLOY_DIR 
 CMD ["--deploymentDir","/opt/payara/deployments", "--port", "8080"]
 ENV INSTANCE_NUMBER=UNO
 #ENV AZ_ST_ACC_CONN_STRING=
 #ENV AZ_ST_ACC_NAME=
 ENV LOG_ROOT_PATH=/mnt/volumes/vazurefileservice/log
-ENV LOG_ROOT_PATH_BLOB=dev/log
-ENV COUNTRY=GT
 ENV COMPUTERNAME=DOCKER
 
-#VOLUME /mnt/volume/vazurefileservice
+#VOLUME /mnt/volumes/vazurefileservice
+#docker build -f .\Dockerfile.local -t meza360.docker.io/azure-file-service:latest .
+#docker run -d -p 8080:8080 --mount type=volume,source=vazurefileservice,target=/mnt/volumes/vazurefileservice meza360.docker.io/azure-file-service:latest
