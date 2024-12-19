@@ -38,3 +38,6 @@ Se utiliza Payara Micro para contenerizacion del aplicativo en la arquitectura c
 
 
 Se necesitan establecer las variables para el funcionamiento del aplicativo transparente desde onPremise:
+
+
+Kubectl command failed: The Service "api-service" is invalid: spec.ports[0].nodePort: Invalid value: 8102: provided port is not in the valid range. The range of valid ports is 30000-32767
