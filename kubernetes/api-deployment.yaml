@@ -5,7 +5,7 @@ metadata:
   labels:
     app: file-service
 spec:
-  replicas: 15
+  replicas: 2
   selector:
     matchLabels:
       app: file-service
@@ -46,11 +46,11 @@ spec:
             - containerPort: 8080
           resources:
             limits:
-              cpu: "100m"
-              memory: "256Mi"
+              cpu: "1000m"
+              memory: "1024Mi"
             requests:
-              cpu: "50m"
-              memory: "128Mi"
+              cpu: "500m"
+              memory: "256Mi"
       #      imagePullSecrets:
       #        - name: miclarocore-credentials
       #dnsPolicy: None
