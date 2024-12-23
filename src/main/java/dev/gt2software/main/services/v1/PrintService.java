@@ -128,7 +128,7 @@ public class PrintService {
                                                                                                 .getMetadata()
                                                                                                 .getCreationTimestamp()));
                                         });
-                        _logger.debug(marker, "K8s client information", client);
+                        _logger.debug(marker, "K8s client information {}", client);
                         response.put("code", 200);
                         return response;
                 } catch (Exception e) {

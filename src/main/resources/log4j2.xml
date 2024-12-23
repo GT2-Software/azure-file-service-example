@@ -15,12 +15,12 @@
   </Properties>
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p %c - %m%n" />
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p - %m%n" />
     </Console>
     <RollingRandomAccessFile name="RollingRandomAccessFileK8sAppender"
       fileName="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:POD_NAME}.log"
       filePattern="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:POD_NAME}-%d{yyyy-MM-dd}-%i.log">
-      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p %c - %m%n" />
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p - %m%n" />
       <Policies>
         <TimeBasedTriggeringPolicy modulate="true" interval="1" />
         <SizeBasedTriggeringPolicy size="10 MB" />
@@ -29,7 +29,7 @@
     <RollingRandomAccessFile name="RollingRandomAccessFileContainerAppender"
       fileName="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:HOSTNAME}.log"
       filePattern="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:HOSTNAME}-%d{yyyy-MM-dd}-%i.log">
-      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p %c - %m%n" />
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p - %m%n" />
       <Policies>
         <TimeBasedTriggeringPolicy modulate="true" interval="1" />
         <SizeBasedTriggeringPolicy size="10 MB" />
