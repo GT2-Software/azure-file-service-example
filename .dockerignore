@@ -26,3 +26,7 @@ tienda_en_linea_RG1.iml
 .vscode/**
 .vscode/
 .vscode
+
+**/kubernetes
+**/loadbalancer
+README.md

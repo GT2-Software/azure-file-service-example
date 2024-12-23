@@ -1,15 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration xmlns="https://logging.apache.org/xml/ns"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="https://logging.apache.org/xml/ns https://logging.apache.org/xml/ns/log4j-config-2.xsd">
+  xsi:schemaLocation="https://logging.apache.org/xml/ns https://logging.apache.org/xml/ns/log4j-config-2.xsd"
+  status="WARN">
+  <Properties>
+    <Property name="kubernetes.log4j.useProperties" value="true" />
+    <Property name="log4j2.kubernetes.client.apiVersion" value="v1.31.2" />
+    <Property name="log4j2.kubernetes.client.caCertData" value="${env:CA_CERT_DATA}" />
+    <Property name="log4j2.kubernetes.client.clientCertData" value="${env:CLIENT_CERT_DATA}" />
+    <Property name="log4j2.kubernetes.client.clientKeyData" value="${env:CLIENT_KEY_DATA}" />
+    <Property name="log4j2.kubernetes.client.masterUrl" value="${env:MASTER_URL}" />
+    <Property name="kubernetes.master" value="${env:MASTER_URL}" />
+    <Property name="kubernetes.api.version" value="v1.31.2" />
+  </Properties>
   <Appenders>
     <Console name="Console" target="SYSTEM_OUT">
-      <PatternLayout pattern="%d [%t] %p %c - %m%n" />
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p %c - %m%n" />
     </Console>
-    <RollingRandomAccessFile name="RollingRandomAccessFile"
-      fileName="${env:LOG_ROOT_PATH}/${k8s:podId}/app-${env:HOSTNAME}.log"
-      filePattern="${env:LOG_ROOT_PATH}/${k8s:podId}/app-${docker:HOSTNAME}-%d{yyyy-MM-dd}-%i.log">
-      <PatternLayout pattern="%d [%t] %p %c - %m%n" />
+    <RollingRandomAccessFile name="RollingRandomAccessFileK8sAppender"
+      fileName="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:POD_NAME}.log"
+      filePattern="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:POD_NAME}-%d{yyyy-MM-dd}-%i.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p %c - %m%n" />
+      <Policies>
+        <TimeBasedTriggeringPolicy modulate="true" interval="1" />
+        <SizeBasedTriggeringPolicy size="10 MB" />
+      </Policies>
+    </RollingRandomAccessFile>
+    <RollingRandomAccessFile name="RollingRandomAccessFileContainerAppender"
+      fileName="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:HOSTNAME}.log"
+      filePattern="${env:LOG_ROOT_PATH}/${date:YYY-MM}/app-${env:HOSTNAME}-%d{yyyy-MM-dd}-%i.log">
+      <PatternLayout pattern="%d{yyyy-MM-dd HH:mm}{GMT-6} %c{10} %p %c - %m%n" />
       <Policies>
         <TimeBasedTriggeringPolicy modulate="true" interval="1" />
         <SizeBasedTriggeringPolicy size="10 MB" />
@@ -19,11 +39,18 @@
   <Loggers>
     <Logger name="dev.gt2software" level="TRACE">
       <AppenderRef ref="Console" />
-      <AppenderRef ref="RollingRandomAccessFile" />
+      <AppenderRef ref="RollingRandomAccessFileK8sAppender">
+        <Filters>
+          <MarkerFilter marker="K8S" onMismatch="DENY" />
+        </Filters>
+      </AppenderRef>
+      <AppenderRef ref="RollingRandomAccessFileContainerAppender">
+        <Filters>
+          <MarkerFilter marker="Container" onMismatch="DENY" />
+        </Filters>
+      </AppenderRef>
     </Logger>
-    <Root level="TRACE">
-      <AppenderRef ref="Console" />
-      <AppenderRef ref="RollingRandomAccessFile" />
+    <Root level="TRACE" additivity="false">
     </Root>
   </Loggers>
 </Configuration>

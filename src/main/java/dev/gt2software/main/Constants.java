@@ -1,6 +1,7 @@
 package dev.gt2software.main;
 
 public class Constants {
+    public static final String DEPLOYMENT_ARCH = System.getenv("DEPLOYMENT_ARCH");
     public static int conteo = 0;
     public static String AZ_ST_ACC_CONN_STRING = System.getenv("AZ_ST_ACC_CONN_STRING");
     public static String AZ_ST_ACC_NAME = System.getenv("AZ_ST_ACC_NAME");
