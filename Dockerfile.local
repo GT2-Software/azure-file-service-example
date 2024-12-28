@@ -16,14 +16,17 @@ RUN mkdir -p /mnt/volumes \
     && mkdir -p /mnt/volumes/vazurefileservice \
     && mkdir -p /mnt/volumes/vazurefileservice/prd/log \
     && mkdir -p /mnt/volumes/vazurefileservice/dev/log \
-    && chown -R payara:payara /mnt/volumes
+    && chown -R payara:payara /mnt/volumes \
+    && apk add busybox-initscripts openrc
+
+COPY container/cron-log-files /etc/periodic/cron-log-files
 
 #USER payara
 COPY --from=maven /app/target/azure-file-service-1.0.war $DEPLOY_DIR
 COPY container/log4j.properties /opt/payara/log4j.properties
-#COPY container/entrypoint.sh /opt/payara/entrypoint.sh
+COPY container/entrypoint.sh /opt/payara/entrypoint.sh
 
-CMD ["--deploymentDir","/opt/payara/deployments", "--port", "8080", "--systemproperties", "log4j.properties"]
+#CMD ["--deploymentDir","/opt/payara/deployments", "--port", "8080", "--systemproperties", "log4j.properties"]
 
 VOLUME /mnt/volumes/vazurefileservice
 #docker build -f .\Dockerfile.local -t meza360.docker.io/azure-file-service:latest .
