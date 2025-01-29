@@ -9,8 +9,4 @@ spec:
     - port: 5000
       protocol: TCP
       targetPort: 8080
-      #nodePort: 30102
   type: ClusterIP
-  #externalIPs:
-  #  - 192.168.0.63
-  #  - 192.168.0.200
