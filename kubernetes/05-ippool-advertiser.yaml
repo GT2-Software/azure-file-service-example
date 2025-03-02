@@ -1,0 +1,10 @@
+apiVersion: metallb.io/v1beta1
+kind: L2Advertisement
+metadata:
+  name: balancer-ip-pool-advertiser-l2
+  namespace: metallb-system
+spec:
+  ipAddressPools:
+    - balancer-ip-pool
+  interfaces:
+    - eth0

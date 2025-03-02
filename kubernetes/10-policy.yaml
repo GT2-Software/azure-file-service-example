@@ -1,0 +1,31 @@
+apiVersion: projectcalico.org/v3
+kind: GlobalNetworkPolicy
+metadata:
+  name: allow-tcp-web
+  namespace: default
+spec:
+  #selector: color == 'red'
+  ingress:
+    - action: Allow
+      protocol: TCP
+      #source:
+      #selector: color == 'blue'
+      destination:
+        ports:
+          - "5000"
+          - "8080"
+          - "80"
+          - "443"
+    - action: Log
+      protocol: TCP
+  egress:
+    - action: Allow
+      protocol: TCP
+      destination:
+        ports:
+          - "5000"
+          - "8080"
+          - "80"
+          - "443"
+    - action: Log
+      protocol: TCP

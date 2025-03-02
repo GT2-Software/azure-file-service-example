@@ -1,0 +1,28 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: file-service-a
+  annotations:
+    #nginx.ingress.kubernetes.io/rewrite-target: "/$2"
+    #nginx.ingress.kubernetes.io/app-root: "/azure-file-service"
+    #nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    #nginx.ingress.kubernetes.io/force-ssl-redirect: "false"
+    #nginx.ingress.kubernetes.io/enable-cors: "false"
+    nginx.org/proxy-connect-timeout: "5s"
+    #nginx.org/proxy-read-timeout: "5s"
+    #nginx.org/rewrites: "serviceName=api-service rewrite=/;"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: file-service.apps.gt2software.dev
+      http:
+        paths:
+          - path: /azure-file-service
+            #- path: "/path-a/"
+            #- path: "/path-a(/|$)(.*)"
+            pathType: Prefix
+            backend:
+              service:
+                name: api-service
+                port:
+                  number: 5000
