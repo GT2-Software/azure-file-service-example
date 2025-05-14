@@ -1,5 +1,5 @@
 # STAGE 1 compile and buid war
-FROM maven:3.8.1-jdk-8 AS maven
+FROM maven:3.9-eclipse-temurin-11-focal AS maven
 WORKDIR /app
 
 COPY src ./src
@@ -10,7 +10,7 @@ RUN mvn clean package
 
 # STAGE 2 deploy war
 FROM payara/micro:5.2022.5
-COPY --from=maven /app/target/azure-files-crud-1.0.war $DEPLOY_DIR 
+COPY --from=maven /app/target/azure-storage-service-1.1.war $DEPLOY_DIR 
 CMD ["--deploymentDir","/opt/payara/deployments", "--port", "8080"]
 #ENV INSTANCE_NUMBER=UNO
 #ENV AZ_ST_ACC_CONN_STRING=DefaultEndpointsProtocol=https;AccountName=stlandingdevsv01;AccountKey=ixD/6gC3JIglNcsnyE6Z/CF5Cdgnn8cGf7B4sjD3xUGL/ridTUPzFQbabTEpMXnaoSMliJG4Itpo+AStEtXETw==;EndpointSuffix=core.windows.net
