@@ -2,12 +2,12 @@ package dev.gt2software.main.models;
 
 import java.util.Date;
 
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.NewCookie;
-import javax.ws.rs.core.Request;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.Request;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -162,7 +162,7 @@ public class ResponseModel {
     /**
      * @author giovani.meza
      * @return La respuesta en formato de
-     *         {@code javax.ws.rs.Response}
+     *         {@code jakarta.ws.rs.Response}
      */
     public Response getResponse(Request req) {
         this.request = req;
@@ -190,7 +190,7 @@ public class ResponseModel {
     /**
      * @author giovani.meza
      * @return La respuesta en formato de
-     *         {@code javax.ws.rs.Response}
+     *         {@code jakarta.ws.rs.Response}
      */
     public Response getResponse() {
         try {
@@ -260,7 +260,7 @@ public class ResponseModel {
      * @author giovani.meza
      * @param cookieValue El JSON Web Token de refresco en formato {@code String}
      *                    sin ninguna conversion
-     * @return {@code javax.ws.rs.core.Response } - Modelo de respuesta
+     * @return {@code jakarta.ws.rs.core.Response } - Modelo de respuesta
      */
     public Response getResponseWithCookies(String cookieValue) {
         String cookieName = "rjwt"; // Haciendo referencia a refreshToken
@@ -315,7 +315,7 @@ public class ResponseModel {
      * 
      * @author giovani.meza
      * @param file El archivo que sera enviado al cliente.
-     * @return {@code javax.ws.rs.core.Reponse}
+     * @return {@code jakarta.ws.rs.core.Reponse}
      */
     /*
      * public Response getResponseWithAttachmentV2(Attachment file) {
@@ -454,7 +454,7 @@ public class ResponseModel {
      * 
      * @author giovani.meza
      * @param file El archivo que sera enviado al cliente.
-     * @return {@code javax.ws.rs.core.Reponse}
+     * @return {@code jakarta.ws.rs.core.Reponse}
      */
     /*
      * public HttpResponseMessage

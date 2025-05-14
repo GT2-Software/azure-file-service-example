@@ -1,19 +1,22 @@
-package dev.gt2software.main.controllers;
+package dev.gt2software.main.controllers.blob;
 
+import java.io.InputStream;
 import java.util.Base64;
 import java.util.Optional;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.json.JSONObject;
 
 import com.azure.core.util.BinaryData;
@@ -117,6 +120,21 @@ public class AzureBlobController {
             System.out.println("\t" + blobItem.getName());
         }
         return "check console";
+    }
+
+    @POST
+    @Path("binary/upload")
+    // @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadBinaryFile(
+            @FormDataParam("fileName") String fileName,
+            @FormDataParam("containerName") String containerName,
+            @FormDataParam("file") InputStream fileInputStream) {
+        responseModel
+                .setResponse(blobService.uploadBinaryFileFromFormDataParam(fileName,
+                        containerName,
+                        fileInputStream));
+        return responseModel.getResponse();
     }
 
 }

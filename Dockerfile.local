@@ -1,5 +1,5 @@
 # STAGE 1 compile and buid war
-FROM maven:3.8.1-jdk-8 AS maven
+FROM maven:3.9-eclipse-temurin-11-focal AS maven
 WORKDIR /app
 
 COPY src ./src
@@ -9,7 +9,7 @@ COPY pom.xml ./
 RUN mvn clean package
 
 # STAGE 2 deploy war
-FROM payara/micro:5.2022.5
+FROM payara/micro:6.2024.5
 
 USER root
 RUN mkdir -p /mnt/volumes \
@@ -17,12 +17,12 @@ RUN mkdir -p /mnt/volumes \
     && mkdir -p /mnt/volumes/vazurefileservice/prd/log \
     && mkdir -p /mnt/volumes/vazurefileservice/dev/log \
     && chown -R payara:payara /mnt/volumes \
-    && apk add busybox-initscripts openrc curl
+    && apk add openrc curl
 
 COPY container/cron-log-files /etc/periodic/cron-log-files
 
 #USER payara
-COPY --from=maven /app/target/azure-file-service-1.0.war $DEPLOY_DIR
+COPY --from=maven /app/target/azure-storage-service-1.1.war $DEPLOY_DIR
 COPY container/log4j.properties /opt/payara/log4j.properties
 COPY container/entrypoint.sh /opt/payara/entrypoint.sh
 
@@ -30,4 +30,4 @@ COPY container/entrypoint.sh /opt/payara/entrypoint.sh
 
 VOLUME /mnt/volumes/vazurefileservice
 #docker build -f .\Dockerfile.local -t meza360/azure-file-service:latest .
-#docker run -d -p 8080:8080 --mount type=volume,source=vazurefileservice,target=/mnt/volumes/vazurefileservice -e LOG_ROOT_PATH=/mnt/volumes/vazurefileservice/log -e DEPLOYMENT_ARCH=Container meza360/azure-file-service:latest
+#docker run -d -p 7071:8080 --mount type=volume,source=vazurefileservice,target=/mnt/volumes/vazurefileservice -e LOG_ROOT_PATH=/mnt/volumes/vazurefileservice/log -e DEPLOYMENT_ARCH=Container -e AZURE_QUEUE_ENV=local -e AZ_ST_ACC_CONN_STRING="DefaultEndpointsProtocol=https;AccountName=staccinfradev01;AccountKey=Eng665ApfOTWPrpJjGBZyxzRUhm513Q9Jnh7c3dYqkEIampzvvduQb8hIxE1aNbFez1nB+EmODw7+AStNITPEQ==;EndpointSuffix=core.windows.net" meza360/azure-file-service:latest

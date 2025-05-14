@@ -3,7 +3,10 @@ package dev.gt2software.main.services.v1;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Base64;
@@ -222,5 +225,33 @@ public class BlobService {
                     .put("message", e.getMessage())
                     .put("code", 400);
         }
+    }
+
+    public JSONObject uploadBinaryFileFromFormDataParam(String fileName, String containerName,
+            InputStream fileInputStream) {
+        try {
+            // I need to convert the InpurtStream to a BinaryData
+            // and then upload it to the blob
+            if (isInvalidFilename(fileName)) {
+                throw new JSONException("Invalid filename. Must not contain '..' or '\\' characters");
+            }
+            BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
+                    .connectionString(Constants.AZ_ST_ACC_CONN_STRING)
+                    .buildClient();
+
+            blobServiceClient.getBlobContainerClient(containerName)
+                    .getBlobClient(fileName)
+                    .upload(fileInputStream);
+            // .upload(BinaryData.fromStream(fileInputStream), true);
+
+        } catch (Exception e) {
+            _logger.error("Error al guardar el archivo: {}", e);
+            return new JSONObject()
+                    .put("message", "Error al guardar el archivo")
+                    .put("code", 500);
+        }
+        return new JSONObject()
+                .put("message", String.format("Check file downloaded: %s", fileName))
+                .put("code", 200);
     }
 }
