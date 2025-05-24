@@ -17,8 +17,8 @@ public class ApplicationConfig extends Application {
     }
 
     private void addRestResourceClasses(Set<Class<?>> resources) {
-
         resources.add(dev.gt2software.main.controllers.blob.AzureBlobController.class);
         resources.add(dev.gt2software.main.controllers.queue.AzureQueueController.class);
+        resources.add(dev.gt2software.main.controllers.fileshare.AzureFileShareController.class);
     }
 }

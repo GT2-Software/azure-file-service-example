@@ -30,3 +30,10 @@ tienda_en_linea_RG1.iml
 *.log
 *.log.*
 
+# Azurite dev
+**/__azurite__**
+__azurite**
+**/__blobstorage__**
+__blobstorage**
+AzuriteConfig
+**/AzuriteConfig
