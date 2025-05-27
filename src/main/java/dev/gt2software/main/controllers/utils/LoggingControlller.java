@@ -1,19 +1,15 @@
-package dev.gt2software.main.controllers;
-
-import java.util.Optional;
+package dev.gt2software.main.controllers.utils;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import dev.gt2software.main.Constants;
 import dev.gt2software.main.models.ResponseModel;
 import dev.gt2software.main.services.v1.PrintService;
 
@@ -24,10 +20,6 @@ public class LoggingControlller {
     private Logger logger = LogManager.getLogger(LoggingControlller.class);
 
     public LoggingControlller() {
-    }
-
-    private void setSystemProperties() {
-
     }
 
     @GET
